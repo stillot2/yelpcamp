@@ -15,6 +15,16 @@
     display: inline;
 }
 
+.user-tag {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+
 #map {
     height: 300px;
     width: 100%;

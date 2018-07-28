@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var Campground = require("./models/campground");
 var Comment   = require("./models/comment");
+var User = require("./models/user");
  
 var data = [
     {
@@ -47,6 +48,11 @@ function seedDB(){
                 console.log(err);
             }
             console.log("removed comments!");
+                    User.remove({}, function(err) {
+                    if(err){
+                        console.log(err);
+                    }
+                    console.log("removed users!");
              //add a few campgrounds
             // data.forEach(function(seed){
             //     Campground.create(seed, function(err, campground){
@@ -76,6 +82,7 @@ function seedDB(){
             //         }
             //     });
             // });
+                });
         });
     }); 
 }
