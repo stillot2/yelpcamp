@@ -1,19 +1,21 @@
-var express         = require("express"),
-    app         = express(),
-    bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose"),
-    Campground  = require("./models/campground"),
-    Comment     = require("./models/comment"),
-    seedDB      = require("./seeds"),
-    flash       = require("connect-flash"),
-    passport    = require("passport"),
-    LocalStrategy = require("passport-local"),
-    User = require("./models/user"),
-    methodOverride = require("method-override");
+require("dotenv").config();
 
-var commentRoutes = require("./routes/comments"),
-    campgroundRoutes = require("./routes/campgrounds"),
-    indexRoutes = require("./routes/index");
+var express             = require("express"),
+    app                 = express(),
+    bodyParser          = require("body-parser"),
+    mongoose            = require("mongoose"),
+    Campground          = require("./models/campground"),
+    Comment             = require("./models/comment"),
+    seedDB              = require("./seeds"),
+    flash               = require("connect-flash"),
+    passport            = require("passport"),
+    LocalStrategy       = require("passport-local"),
+    User                = require("./models/user"),
+    methodOverride      = require("method-override");
+
+var commentRoutes       = require("./routes/comments"),
+    campgroundRoutes    = require("./routes/campgrounds"),
+    indexRoutes         = require("./routes/index");
    
  
 
@@ -48,12 +50,12 @@ app.use(function(req,res,next){
 });
 
 
-//seedDB(); // seed the database
+// seedDB(); // seed the database
 
 app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
-    console.log("yc server spinning...");
+    console.log("server spinning...");
 });
