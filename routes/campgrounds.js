@@ -52,6 +52,7 @@ router.get("/",function(req,res){
 router.post("/", middleware.isLoggedIn, upload.single("image"), function(req,res){
     cloudinary.uploader.upload(req.file.path, function(result){
         req.body.campground.image = result.secure_url;
+        req.body.campground.imageId = result.public_id;
         req.body.campground.author = {
             id: req.user._id,
             username: req.user.username,
@@ -112,27 +113,74 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req,res){
     });
 });
 //  UPDATE
-router.put("/:id", middleware.checkCampgroundOwnership, function(req,res){
-    geocoder.geocode(req.body.campground.location, function(err,data){
-            if(err || !data.length){
-                req.flash("error",err.message);
-                return res.redirect("back");
-            }
-            var lat = data[0].latitude;
-            var lng = data[0].longitude;
-            var location = data[0].formattedAddress;
-            req.body.campground.lat = lat;
-            req.body.campground.lng = lng;
-            req.body.campground.location = location;
-        Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedItem){
-        if (err || !updatedItem) {
-            req.flash("error", "Campground not found");
-            res.redirect("/campgrounds");
-        } else {
-            res.redirect("/campgrounds/" + req.params.id);
-        }
+router.put("/:id", middleware.checkCampgroundOwnership, upload.single("image"), function(req,res){
+    // cloudinary.uploader.upload(req.file.path, function(result){
+    //     req.body.campground.image = result.secure_url;
+    //     req.body.campground.author = {
+    //         id: req.user._id,
+    //         username: req.user.username,
+    //         avatar: req.user.avatar
+    //     };
+        geocoder.geocode(req.body.campground.location, function(err,data){
+                if(err || !data.length){
+                    req.flash("error",err.message);
+                    return res.redirect("back");
+                }
+                var lat = data[0].latitude;
+                var lng = data[0].longitude;
+                var location = data[0].formattedAddress;
+                req.body.campground.lat = lat;
+                req.body.campground.lng = lng;
+                req.body.campground.location = location;
+            // Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedItem){
+            //     if (err || !updatedItem) {
+            //         req.flash("error", "Campground not found");
+            //         res.redirect("/campgrounds");
+            //     } else {
+            //         res.redirect("/campgrounds/" + req.params.id);
+            //     }
+            // });
+            Campground.findById(req.params.id, function(err, foundItem){
+                if (err || !foundItem) {
+                    req.flash("error", "Campground not found");
+                    res.redirect("/campgrounds");
+                } else {
+                    if(req.file){
+                        cloudinary.v2.uploader.destroy(foundItem.imageId, function(err){
+                            if(err){
+                                req.flash("error",err.message);
+                                return res.redirect("back");
+                            } else {
+                                cloudinary.v2.uploader.upload(req.file.path, function(err,result){
+                                    if(err){
+                                        req.flash("error",err.message);
+                                        return res.redirect("back");
+                                    } else {
+                                        foundItem.imageId = result.public_id;
+                                        foundItem.image = result.secure_url;
+                                        foundItem.name = req.body.campground.name;
+                                        foundItem.description = req.body.campground.description;
+                                        foundItem.price = req.body.campground.price;
+                                        foundItem.save();
+                                        req.flash("success", "Successfully updated");
+                                        res.redirect("/campgrounds/"+foundItem._id);
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        foundItem.name = req.body.campground.name;
+                        foundItem.description = req.body.campground.description;
+                        foundItem.price = req.body.campground.price;
+                        foundItem.save();
+                        req.flash("success", "Successfully updated");
+                        res.redirect("/campgrounds/"+foundItem._id);
+                    }
+                    //res.redirect("/campgrounds/" + req.params.id);
+                }
+            });
         });
-    });
+    // });
 });
 
 
