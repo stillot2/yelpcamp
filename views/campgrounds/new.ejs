@@ -4,21 +4,26 @@
     <div class="row">
         <h2 style="text-align: center;">Create a new campground</h2>
         <div style="width: 30%; margin: 25px auto;">
-            <form action="/campgrounds" method="POST">
+            <form action="/campgrounds" method="POST" enctype="multipart/form-data">
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="name" name="name">
+                    <label for="new-campground-name">Campgrounds name</label>
+                    <input class="form-control" id="new-campgrounds-name" type="text" placeholder="name" name="campground[name]" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="number" placeholder="price per night" name="price" min="0" step="0.01">
+                    <label for="new-campground-price">Price per night</label>
+                    <input class="form-control" id="new-campground-price" type="number" placeholder="price per night" name="campground[price]" min="0" step="0.01" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="image url" name="image">
+                    <label for="image">Image</label>
+                    <input id="image" type="file" accept="image/*" name="image" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="description" name="description">
+                    <label for="new-campgrounds-desc">Description</label>
+                    <input class="form-control" id="new-campgrounds-desc" type="text" placeholder="description" name="campground[description]">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" placeholder="Yosemite National Park, CA" name="location">
+                    <label for="new-campgrounds-location">Location</label>
+                    <input class="form-control" id="new-campgrounds-location" type="text" placeholder="Yosemite National Park, CA" name="campground[location]" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-default btn-block btn-primary">Submit</button>

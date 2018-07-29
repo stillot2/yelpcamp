@@ -4,6 +4,29 @@ var Campground = require("../models/campground");
 var middleware = require("../middleware");
 var nodeGeocoder = require("node-geocoder");
 
+var multer = require("multer");
+var storage = multer.diskStorage({
+    filename: function(req, file, callback) {
+        callback(null, Date.now() + file.originalname);
+    }
+});
+var imageFilter = function (req, file, cb) {
+    //accept images only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error("Only image files are allowed"), false);
+    }
+    cb(null,true);
+};
+var upload = multer({storage: storage, fileFilter: imageFilter});
+
+
+var cloudinary = require("cloudinary");
+cloudinary.config({
+    cloud_name: "stillot2",
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 var options = {
     provider: "google",
     httpAdapter: "https",
@@ -26,38 +49,36 @@ router.get("/",function(req,res){
 });
 
 // CREATE - add new item to database
-router.post("/", middleware.isLoggedIn, function(req,res){
-    var newCampground = {
-        name: req.body.name,
-        price: req.body.price,
-        image: req.body.image, 
-        description: req.body.description,
-        author: {
+router.post("/", middleware.isLoggedIn, upload.single("image"), function(req,res){
+    cloudinary.uploader.upload(req.file.path, function(result){
+        req.body.campground.image = result.secure_url;
+        req.body.campground.author = {
             id: req.user._id,
             username: req.user.username,
             avatar: req.user.avatar
-        }
-    };
-    geocoder.geocode(req.body.location, function(err,data){
-        if(err|| !data.length){
-            req.flash("error","Invalid address");
-            return res.redirect("back");
-        }
-        var lat = data[0].latitude;
-        var lng = data[0].longitude;
-        var location = data[0].formattedAddress;
-        newCampground.lat = lat;
-        newCampground.lng = lng;
-        newCampground.location = location;
-        Campground.create(newCampground, function(err, newlyCreated){
-        if(err){
-            console.log(err);
-        } else {
-            res.redirect("/campgrounds");
-        }
+        };
+        geocoder.geocode(req.body.campground.location, function(err,data){
+            if(err || !data.length){
+                req.flash("error","Invalid address");
+                return res.redirect("back");
+            }
+            var lat = data[0].latitude;
+            var lng = data[0].longitude;
+            var location = data[0].formattedAddress;
+            req.body.campground.lat = lat;
+            req.body.campground.lng = lng;
+            req.body.campground.location = location;
+            // cloudinary
+            Campground.create(req.body.campground, function(err, newlyCreated){
+                if(err){
+                    req.flash("error", err.message);
+                    return res.redirect("back");
+                } else {
+                    res.redirect("/campgrounds/"+newlyCreated.id);
+                }
+            });
+        });
     });
-    });
-    
 });
 
 // NEW - show form for new item
@@ -92,15 +113,17 @@ router.get("/:id/edit", middleware.checkCampgroundOwnership, function(req,res){
 });
 //  UPDATE
 router.put("/:id", middleware.checkCampgroundOwnership, function(req,res){
-    geocoder.geocode(req.body.location, function(err, data){
-        if(err || !data.length){
-            req.flash("error", "Invalid address");
-            return res.redirect("back");
-        }
-        req.body.campground.lat = data[0].latitude;
-        req.body.campground.lng = data[0].longitude;
-        req.body.campground.location = data[0].formattedAddress;
-        
+    geocoder.geocode(req.body.campground.location, function(err,data){
+            if(err || !data.length){
+                req.flash("error",err.message);
+                return res.redirect("back");
+            }
+            var lat = data[0].latitude;
+            var lng = data[0].longitude;
+            var location = data[0].formattedAddress;
+            req.body.campground.lat = lat;
+            req.body.campground.lng = lng;
+            req.body.campground.location = location;
         Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedItem){
         if (err || !updatedItem) {
             req.flash("error", "Campground not found");
