@@ -42,6 +42,7 @@ function seedDB(){
         if(err){
             console.log(err);
         }
+        
         console.log("removed campgrounds!");
         Comment.remove({}, function(err) {
             if(err){
