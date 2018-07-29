@@ -52,7 +52,23 @@ router.get("/logout", function(req, res){
 });
 
 /////////////////////
-
+// admin page
+router.get("/admin", function(req, res){
+    if(req.user.username === "admin"){
+        // find all users
+        User.find({}, function(err,users){
+        if(err){
+            console.log(err);
+            res.redirect("back");
+        } else {
+            res.render("admin/show", {data:users, page:"admin"});
+        };
+        });
+    } else {
+        req.flash("error", "Must be admin to view here");
+        res.redirect("back");
+    };
+});
 
 // user profile
 router.get("/users/:id", function(req, res){

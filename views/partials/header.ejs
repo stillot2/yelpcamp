@@ -27,10 +27,14 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
               <% if(!currUser){ %>
+                    
                   <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                   <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
               <% } else { %>
-                  <li><a href="#">Signed In As <%= currUser.username %></a></li>
+              <% if(currUser.username === "admin") { %>
+                    <li class="<%= typeof page !== 'undefined' && page === 'admin' ? 'active' : '' %>"><a href="/admin">Administration</a></li>
+                    <% }; %>
+                  <li><a href="users/<%=currUser._id%>">Hello <%= currUser.username %>!</a></li>
                   <li><a href="/logout">Logout</a></li>
               <% } %>
           </ul>
