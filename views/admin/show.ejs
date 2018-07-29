@@ -3,6 +3,14 @@
 <ul>
     <% data.forEach(function(user){ %>
         <li><%=user.username%></li>
+        <ul>
+            <% if(user.camps){ %>
+                <%user.camps.forEach(function(camp){%>
+                <li><%=camp.name%></li>
+                <% }); %>
+            <% }; %>
+        </ul>
+        
     <% }); %>
 </ul>
 

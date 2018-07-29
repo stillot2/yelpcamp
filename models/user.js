@@ -7,7 +7,19 @@ var userSchema = new mongoose.Schema({
     avatar: String,
     fname: String,
     lname: String,
-    email: String
+    email: String,
+    campgrounds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Campground"
+        }
+    ],
+    comments: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
 });
 
 userSchema.plugin(passportLocalMongoose); //add methods to user schema

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var User = require("../models/user");
 var Campground = require("../models/campground");
+var Comment = require("../models/comment");
 var passport = require("passport");
 
 //landing page
@@ -61,9 +62,35 @@ router.get("/admin", function(req, res){
             console.log(err);
             res.redirect("back");
         } else {
-            res.render("admin/show", {data:users, page:"admin"});
-        };
-        });
+            // users.forEach(  function(user){
+            //     Campground.find().where("author.id").equals(user._id).exec(function(err,campgrounds){
+            //         if (err){
+            //             req.flash("error", "Something went wrong");
+            //             res.redirect("back");
+            //         } else {
+            //             Comment.find().where("author.id").equals(user._id).exec(function(err,comments){
+            //                 if (err){
+            //                     req.flash("error", "Something went wrong");
+            //                     res.redirect("back");
+            //                 } else {
+            //                     user.camps = [];
+            //                     user.comms = [];
+            //                     user.camps.push(campgrounds);
+            //                     user.comms.push(comments);
+            //                     console.log(campgrounds);
+            //                     console.log(comments);
+                                
+            //                 }
+            //             });
+            //         }
+            //     });
+        
+            // });
+          res.render("admin/show", {data:users, page:"admin"});
+        }
+        
+       
+    });
     } else {
         req.flash("error", "Must be admin to view here");
         res.redirect("back");
