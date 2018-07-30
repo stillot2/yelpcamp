@@ -7,14 +7,27 @@ var middleware = require("../middleware");
 
 //  COMMENTS ROUTES
 router.get("/new", middleware.isLoggedIn, function(req, res){
-    Campground.findById(req.params.id, function(err, campground){
-        if(err){
-            console.log(err);
+    Campground.findById(req.params.id).populate("comments").exec(function(err, campground){
+        if(err || !campground){
+            req.flash("error", "Campground was removed");
+            res.redirect("back");
         } else {
             res.render("comments/new", {campground: campground});
         }
     });
 });
+
+
+// router.get("/new", middleware.isLoggedIn, function(req, res){
+//     Campground.findById(req.params.id, function(err, campground){
+//         if(err){
+//             console.log(err);
+//         } else {
+//             res.render("comments/new", {campground: campground});
+//         }
+//     });
+// });
+
 
 // comments create
 router.post("/", middleware.isLoggedIn, function(req, res){

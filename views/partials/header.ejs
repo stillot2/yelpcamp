@@ -31,7 +31,7 @@
                   <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                   <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
               <% } else { %>
-              <p class="navbar-text"><em>Logged in as <%= currUser.username %></em></p>
+              <p class="navbar-text" style="margin-left: 15px; color: #bbbbbb;"><em>Logged in as <%= currUser.username %></em></p>
               <% if(currUser.username === "admin") { %>
                     <li class="<%= typeof page !== 'undefined' && page === 'admin' ? 'active' : '' %>"><a href="/admin">Administration</a></li>
                     <% }; %>

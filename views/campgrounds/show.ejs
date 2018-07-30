@@ -2,15 +2,18 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <p class="lead">yelpcamp</p>
-            <div class="list-group">
-                <li class="list-group-item active">info</li>
-                <li class="list-group-item">info</li>
-                <li class="list-group-item">info</li>
+
+            <div class="col-md-3">
+                <p class="lead"><%=campground.name%></p>
+                <div class="list-group">
+                    <li class="list-group-item active">Info</li>
+                    <!--<li class="list-group-item">info</li>-->
+                    <!--<li class="list-group-item">info</li>-->
+                </div>
+                <div id="map" style="margin-bottom: 20px; border-radius: 2%;"></div>
             </div>
-            <div id="map"></div>
-        </div>
+
+
         <div class="col-md-9">
             <div class="thumbnail">
                 <img class="img-responsive" src="<%=campground.image%>" onerror="this.src='https://images.unsplash.com/photo-1496080174650-637e3f22fa03?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b7ca353cfcc4299e6c3d431ff862e1cf&auto=format&fit=crop&w=400&q=60'" />
@@ -45,17 +48,19 @@
                             <div class="user-tag">
                                 <img class="user-tag" src="<%=comment.author.avatar%>" alt="Photo of commenting user" onerror="this.src='https://images.unsplash.com/photo-1470009862877-9004bc12fc8b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cefd2e9022b873086dc1bd376a630396&auto=format&fit=crop&w=400&q=60'" />
                             </div>
-                            <strong><%=comment.author.username%></strong>
+                            <strong><a href="/users/<%=comment.author.id%>"><%=comment.author.username%></a></strong>
                             <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
                             <p>
                                 <%=comment.text%>
                             </p>
+                
                             <% if (currUser && (comment.author.id.equals(currUser._id) || currUser.username === "admin")) { %>
                                 <a class="btn btn-warning btn-xs" href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a>
                                 <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
                                     <button class="btn btn-danger btn-xs">Remove</button>
                                 </form>
                             <% }; %>
+                            <hr>
                         </div>
                     </div>
                 <% }); %>

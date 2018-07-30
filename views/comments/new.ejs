@@ -2,20 +2,107 @@
 
 <div class="container">
     <div class="row">
-        <h2 style="text-align: center;">Add new comment to <%= campground.name %></h2>
-        <div style="width: 30%; margin: 25px auto;">
-            <form action="/campgrounds/<%=campground._id%>/comments" method="POST">
-                <div class="form-group">
-                    <input class="form-control" type="text" placeholder="camping sucks..." name="comment[text]">
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
-                </div>
-            </form>
-            <a href="/campgrounds">Go back</a>
+        <div class="col-md-3">
+            <p class="lead"><%=campground.name%></p>
+            <div class="list-group">
+                <li class="list-group-item active">Info</li>
+                <!--<li class="list-group-item">info</li>-->
+                <!--<li class="list-group-item">info</li>-->
+            </div>
+            <div id="map" style="margin-bottom: 20px; border-radius: 2%;"></div>
         </div>
-        
+        <div class="col-md-9">
+            <div class="thumbnail">
+                <img class="img-responsive" src="<%=campground.image%>" onerror="this.src='https://images.unsplash.com/photo-1496080174650-637e3f22fa03?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b7ca353cfcc4299e6c3d431ff862e1cf&auto=format&fit=crop&w=400&q=60'" />
+                <div class="caption-full">
+                    <h4 class="pull-right">$<%=campground.price%>/night</h4>
+                    <h4><a href="<%=campground.url%>" target="_blank"><%=campground.name%></a></h4>
+                    <p><%=campground.description%></p>
+                    <p>
+                        <p>
+                            <div class="user-tag">
+                                <img class="user-tag" src="<%=campground.author.avatar%>" alt="Photo of listing user" onerror="this.src='https://images.unsplash.com/photo-1470009862877-9004bc12fc8b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cefd2e9022b873086dc1bd376a630396&auto=format&fit=crop&w=400&q=60'">
+                            </div>
+                            <em>Submitted by <a href="/users/<%=campground.author.id%>"><%= campground.author.username %></a>, <%= moment(campground.createdAt).fromNow() %></em>
+                        </p>
+                    </p>
+                    <% if (currUser && (campground.author.id.equals(currUser._id) || currUser.username === "admin")) { %>
+                        <a class="btn btn-warning btn-xs" href="/campgrounds/<%=campground._id%>/edit">Edit</a>
+                        <form class="delete-form" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger btn-xs">Remove</button>
+                        </form>
+                    <% }; %>
+                </div>
+            </div>
+            <div class="well">
+                <form action="/campgrounds/<%=campground._id%>/comments" method="POST">
+                <div class="form-group">
+                    <textarea class="form-control" type="text" placeholder="I love it here!" name="comment[text]"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+                <hr>
+                <% campground.comments.forEach(function(comment){ %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="user-tag">
+                                <img class="user-tag" src="<%=comment.author.avatar%>" alt="Photo of commenting user" onerror="this.src='https://images.unsplash.com/photo-1470009862877-9004bc12fc8b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=cefd2e9022b873086dc1bd376a630396&auto=format&fit=crop&w=400&q=60'" />
+                            </div>
+                            <strong><%=comment.author.username%></strong>
+                            <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
+                            <p>
+                                <%=comment.text%>
+                            </p>
+                            <% if (currUser && (comment.author.id.equals(currUser._id) || currUser.username === "admin")) { %>
+                                <a class="btn btn-warning btn-xs" href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                                <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-danger btn-xs">Remove</button>
+                                </form>
+                            <% }; %>
+                            <hr>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
     </div>
 </div>
+
+
+<script>
+    var map;
+    function initMap() {
+        var lat = <%= campground.lat %>;
+        var lng = <%= campground.lng %>;
+        var center = {lat: lat, lng: lng};
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: center,
+          zoom: 8,
+          scrollwheel: false
+        });
+        var contentString = `
+          <strong><%= campground.name %><br />
+          <%= campground.location %></strong>
+          <p><%= campground.description %></p>
+        `
+        var infoWindow = new google.maps.InfoWindow({
+            content: contentString,
+            maxWidth: 140
+        });
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map
+        });
+        marker.addListener("click", function(){
+            infoWindow.open(map, marker);
+        });
+      }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCc7lguFDtJX1213J5ME-PNESZbHM5S62o&callback=initMap"
+async defer></script>
+
+
 
 <% include ../partials/footer %>
