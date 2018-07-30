@@ -38,9 +38,25 @@
                 </div>
             </div>
             <div class="well">
-                <div class="text-right">
-                    <a class="btn btn-success" href="/campgrounds/<%=campground._id%>/comments/new">Leave a Review</a>
+                
+                
+                
+                <div class="text-right" id="review">
+                    <button class="btn btn-success" onclick="review()">Leave a review</button>
                 </div>
+                
+                
+                <form action="/campgrounds/<%=campground._id%>/comments" method="POST" id="review-submit" style="display: none;">
+                <div class="form-group">
+                    <textarea class="form-control" type="text" placeholder="I love it here!" name="comment[text]"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+                
+                
+                
                 <hr>
                 <% campground.comments.forEach(function(comment){ %>
                     <div class="row">
@@ -69,7 +85,15 @@
     </div>
 </div>
 
-
+<script>
+    
+    function review() {
+        var submit = document.getElementById("review");
+        submit.style.display = "none";
+        var form = document.getElementById("review-submit");
+        form.style.display = "block";
+    }
+</script>
 <script>
     var map;
     function initMap() {
