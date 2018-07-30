@@ -36,8 +36,32 @@ middlewareObj.checkUserOwnership = function(req, res, next){
             req.flash("error", req.params.id+" "+req.user.id+" "+typeof(req.params.id)+" "+typeof(req.user.id));
             res.redirect("back");
         }
+    } else {
+        res.redirect("back");
     }
 };
+
+// middlewareObj.deleteUserComments = async function(req, res, next){
+//     try{
+//         await Comment.remove({"_id": { $in: this.comments }});
+//         next();
+//     } catch (err) {
+//       next(err);
+//     }
+// };
+
+// middlewareObj.deleteUserCampgrounds = async function(req, res, next){
+//     try{
+//         if(this.campgrounds){
+//             await Campground.remove({"_id": { $in: this.campgrounds }});
+//             next();
+//         } else {
+//             next();
+//         }
+//   } catch (err) {
+//       next(err);
+//   }
+// };
 
 middlewareObj.checkCommentOwnership = function(req, res, next) {
     if (req.isAuthenticated()){

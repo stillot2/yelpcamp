@@ -36,11 +36,13 @@ userSchema.pre("remove", async function(next){
             $in: this.campgrounds
          }
       });
-        next();
+      next();
    } catch (err) {
       next(err);
    }
 });
+
+
 
 userSchema.plugin(passportLocalMongoose); //add methods to user schema
 

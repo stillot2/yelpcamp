@@ -137,6 +137,17 @@ router.put("/users/:user_id", middleware.checkUserOwnership, function(req, res){
 });
 
 // USER DESTROY
-
+router.delete("/users/:user_id", middleware.checkUserOwnership, function(req, res){
+    User.findById(req.params.user_id, function(err, user){
+        if (err){
+            req.flash("error", err.message);
+            res.redirect("back");
+        } else {
+            user.remove();
+            req.flash("success", "Successfully deleted account");
+            res.redirect("/campgrounds");
+        }
+    });
+});
 
 module.exports = router;
