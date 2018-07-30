@@ -28,6 +28,17 @@ middlewareObj.checkCampgroundOwnership = function (req, res, next) {
     }
 };
 
+middlewareObj.checkUserOwnership = function(req, res, next){
+    if(req.isAuthenticated()){
+        if(req.params.user_id === req.user.id || req.user.username==="admin"){
+            next();
+        } else {
+            req.flash("error", req.params.id+" "+req.user.id+" "+typeof(req.params.id)+" "+typeof(req.user.id));
+            res.redirect("back");
+        }
+    }
+};
+
 middlewareObj.checkCommentOwnership = function(req, res, next) {
     if (req.isAuthenticated()){
         // is user logged in?

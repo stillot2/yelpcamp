@@ -218,7 +218,7 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
                     //             foundUser.save();
                     //         }
                     //         campground.comments.forEach(function(comment){
-                    //             Comment.findByIdAndRemove(comment.author.id, function(err){
+                    //             Comment.findByIdAndRemove(comment._id, function(err){
                     //                 if(err){
                     //                     req.flash("error",err.message);
                     //                     return res.redirect("back");

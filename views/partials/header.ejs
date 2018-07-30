@@ -34,7 +34,8 @@
               <% if(currUser.username === "admin") { %>
                     <li class="<%= typeof page !== 'undefined' && page === 'admin' ? 'active' : '' %>"><a href="/admin">Administration</a></li>
                     <% }; %>
-                  <li><a href="users/<%=currUser._id%>">Hello <%= currUser.username %>!</a></li>
+                  <p class="navbar-text"><em>Logged in as <%= currUser.username %></em></p>
+                  <li><a href="/users/<%=currUser._id%>">Profile</a></li>
                   <li><a href="/logout">Logout</a></li>
               <% } %>
           </ul>

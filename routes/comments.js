@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router({mergeParams: true});
 var Campground = require("../models/campground");
 var Comment = require("../models/comment");
+var User = require("../models/user");
 var middleware = require("../middleware");
 
 //  COMMENTS ROUTES
@@ -20,22 +21,33 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     //lookup campground by id
     Campground.findById(req.params.id, function(err,campground){
         if(err){
-            req.flash("error", err);
+            req.flash("error", err.message);
             res.redirect("/campgrounds");
         } else {
             Comment.create(req.body.comment, function(err,comment){
                 if(err){
                     console.log(err);
                 } else {
-                    // add username and id to comment
-                    comment.author.id = req.user._id;
-                    comment.author.username = req.user.username;
-                    comment.author.avatar = req.user.avatar;
-                    // save comment
-                    comment.save();
-                    campground.comments.push(comment);
-                    campground.save();
-                    res.redirect("/campgrounds/"+campground._id);
+                    User.findById(req.user._id, function(err, user){
+                        if(err){
+                            req.flash("error", err.message);
+                            res.redirect("/campgrounds");
+                        } else {
+                            // add username and id to comment
+                            comment.author.id = req.user._id;
+                            comment.author.username = req.user.username;
+                            comment.author.avatar = req.user.avatar;
+                            // save comment
+                            comment.save();
+                            // add comment to both campground and user
+                            campground.comments.push(comment);
+                            user.comments.push(comment);
+                            campground.save();
+                            user.save()
+                            res.redirect("/campgrounds/"+campground._id);
+                        }
+
+                    });
                 }
             });
         }
@@ -75,10 +87,11 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
 // destroy
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res){
     //find by id and delete
-    Comment.findByIdAndRemove(req.params.comment_id, function(err){
+    Comment.findById(req.params.comment_id, function(err, comment){
         if(err){
             res.redirect("back");
         } else {
+            comment.remove();
             req.flash("success", "Review has been removed");
             res.redirect("/campgrounds/"+req.params.id);
         }

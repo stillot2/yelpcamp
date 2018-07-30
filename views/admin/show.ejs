@@ -1,17 +1,19 @@
 <% include ../partials/header %>
 
 <ul>
-    <% data.forEach(function(user){ %>
+    <% users.forEach(function(user){ %>
         <li><%=user.username%></li>
-        <ul>
-            <% if(user.camps){ %>
-                <%user.camps.forEach(function(camp){%>
-                <li><%=camp.name%></li>
-                <% }); %>
-            <% }; %>
-        </ul>
-        
     <% }); %>
+    <hr>
+    <%campgrounds.forEach(function(camp){%>
+        <li><%=camp.name%>, <%=camp.author.username%></li>
+    <% }); %>
+    <hr>
+    <%comments.forEach(function(comment){%>
+        <li><%=comment.text%>, <%=comment.author.username%></li>
+    <% }); %>
+        
+    
 </ul>
 
 <% include ../partials/footer %>

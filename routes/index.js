@@ -4,6 +4,7 @@ var User = require("../models/user");
 var Campground = require("../models/campground");
 var Comment = require("../models/comment");
 var passport = require("passport");
+var middleware = require("../middleware");
 
 //landing page
 router.get("/",function(req,res){
@@ -62,31 +63,22 @@ router.get("/admin", function(req, res){
             console.log(err);
             res.redirect("back");
         } else {
-            // users.forEach(  function(user){
-            //     Campground.find().where("author.id").equals(user._id).exec(function(err,campgrounds){
-            //         if (err){
-            //             req.flash("error", "Something went wrong");
-            //             res.redirect("back");
-            //         } else {
-            //             Comment.find().where("author.id").equals(user._id).exec(function(err,comments){
-            //                 if (err){
-            //                     req.flash("error", "Something went wrong");
-            //                     res.redirect("back");
-            //                 } else {
-            //                     user.camps = [];
-            //                     user.comms = [];
-            //                     user.camps.push(campgrounds);
-            //                     user.comms.push(comments);
-            //                     console.log(campgrounds);
-            //                     console.log(comments);
-                                
-            //                 }
-            //             });
-            //         }
-            //     });
-        
-            // });
-          res.render("admin/show", {data:users, page:"admin"});
+            Campground.find({}, function(err, campgrounds){
+                if(err){
+                    console.log(err);
+                    res.redirect("back");
+                } else {
+                    Comment.find({}, function(err, comments){
+                        if(err){
+                            console.log(err);
+                            res.redirect("back");
+                        } else {
+                            res.render("admin/show", {users:users, campgrounds:campgrounds, comments:comments, page:"admin"});
+                        }
+                    })
+                }
+            })
+          
         }
         
        
@@ -97,9 +89,9 @@ router.get("/admin", function(req, res){
     };
 });
 
-// user profile
-router.get("/users/:id", function(req, res){
-    User.findById(req.params.id, function(err, foundUser){
+// USER SHOW
+router.get("/users/:user_id", function(req, res){
+    User.findById(req.params.user_id, function(err, foundUser){
         if(err || !foundUser){
             req.flash("error","User not found");
             res.redirect("back");
@@ -115,5 +107,36 @@ router.get("/users/:id", function(req, res){
         }
     });
 });
+
+// USER EDIT
+router.get("/users/:user_id/edit", middleware.checkUserOwnership, function(req,res){
+    User.findById(req.params.user_id, function(err, user){
+        if(err || !user){
+            req.flash("error", "User not found");
+            res.redirect("back");
+        } else {
+            res.render("users/edit", {user: user});            
+        }
+    });
+});
+// USER UPDATE
+router.put("/users/:user_id", middleware.checkUserOwnership, function(req, res){
+    User.findById(req.params.user_id, function(err,user){
+        if(err){
+            req.flash("error",err.message);
+            res.redirect("back");
+        } else {
+            user.fname = req.body.fname;
+            user.lname = req.body.lname;
+            user.email = req.body.email;
+            user.avatar = req.body.avatar;
+            user.save();
+            res.redirect("/users/"+req.params.user_id);
+        }
+    });
+});
+
+// USER DESTROY
+
 
 module.exports = router;

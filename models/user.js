@@ -1,5 +1,7 @@
 var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
+var Comment = require("./comment");
+var Campground = require("./campground");
 
 var userSchema = new mongoose.Schema({
     username: String,
@@ -20,6 +22,24 @@ var userSchema = new mongoose.Schema({
             ref: "Comment"
         }
     ]
+});
+
+userSchema.pre("remove", async function(next){
+   try{
+      await Comment.remove({
+         "_id": {
+            $in: this.comments
+         }
+      });
+      await Campground.remove({
+         "_id": {
+            $in: this.campgrounds
+         }
+      });
+        next();
+   } catch (err) {
+      next(err);
+   }
 });
 
 userSchema.plugin(passportLocalMongoose); //add methods to user schema

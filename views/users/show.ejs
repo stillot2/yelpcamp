@@ -4,21 +4,29 @@
     <div class="col-md-4">
         <h1><%=user.fname%> <%=user.lname%></h1>
         <div class="thumbnail">
-            <img src="<%=user.avatar %>" alt="user profile image">
+            <img src="<%=user.avatar %>" alt="user profile image" onerror="this.src='https://images.unsplash.com/photo-1532731382914-af710b92eb4a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94b857afbd3ef4a6769c843a6fac2fc4&auto=format&fit=crop&w=400&q=60'">
             <div class="caption">
-                <a href="mailto:<%=user.email%>">Contact <%=user.username%></a>
+                <a href="mailto:<%=user.email%>">Email <%=user.username%></a>
             </div>
         </div>
         
         
     </div>
     <div class="col-md-8">
-        <h3><%=user.fname%>'s campgrounds</h3>
+        <h3><%=user.username%>'s campgrounds</h3>
         <ul>
         <% campgrounds.forEach(function(site) { %>
             <li><a href="/campgrounds/<%=site.id%>"><%= site.name %></a></li>
         <% }); %>
         </ul>
+        <div>
+        <% if (currUser && ((currUser.id ===user.id) || currUser.username === "admin")) { %>
+            <a class="btn btn-warning btn-xs" href="/users/<%=user._id%>/edit">Edit Profile</a>
+            <form class="delete-form" action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-danger btn-xs">Delete Account</button>
+            </form>
+        <% }; %>
+        </div>
     </div>
 </div>
 
