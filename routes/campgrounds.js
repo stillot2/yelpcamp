@@ -206,38 +206,6 @@ router.delete("/:id", middleware.checkCampgroundOwnership, function(req, res){
                     req.flash("error",err.message);
                     return res.redirect("back");
                 } else {
-                    // remove id from user
-                    // User.findById(req.user._id, function(err,foundUser){
-                    //     if(err){
-                    //         req.flash("error",err.message);
-                    //         return res.redirect("back");
-                    //     } else {
-                    //         var idx = foundUser.campgrounds.indexOf(campground._id);
-                    //         if (idx>-1){
-                    //             foundUser.campgrounds.splice(idx, 1);
-                    //             foundUser.save();
-                    //         }
-                    //         campground.comments.forEach(function(comment){
-                    //             Comment.findByIdAndRemove(comment._id, function(err){
-                    //                 if(err){
-                    //                     req.flash("error",err.message);
-                    //                     return res.redirect("back");
-                    //                 } else {
-                                        
-                    //                 }
-                    //             })
-                    //         })
-                    //     }
-                    // })
-                    
-                    // var array = [2, 5, 9];
-                    // var index = array.indexOf(5);
-                    // if (index > -1) {
-                    //   array.splice(index, 1);
-                    // }
-                    // remove all comments, and remove those from user
-                    
-                    //
                     campground.remove();
                     req.flash("success", "Successfully removed campground");
                     res.redirect("/campgrounds");

@@ -15,7 +15,9 @@ var express             = require("express"),
 
 var commentRoutes       = require("./routes/comments"),
     campgroundRoutes    = require("./routes/campgrounds"),
+    userRoutes          = require("./routes/users"),
     indexRoutes         = require("./routes/index");
+
    
  
 
@@ -55,6 +57,7 @@ app.use(function(req,res,next){
 app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
+app.use("/users", userRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function(){
     console.log("server spinning...");
