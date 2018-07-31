@@ -11,6 +11,7 @@
     </tr>
   </thead>
   <% users.forEach(function(user){ %>
+    <% if (user.username !== "admin") { %>
     <tr>
     <td><%=user.fname%></td>
     <td><%=user.lname%></td>
@@ -19,6 +20,7 @@
                 <button class="btn btn-danger btn-xs">Delete User</button>
     </form></td>
     </tr>
+    <% } %>
   <% }); %>
 </table>
 
