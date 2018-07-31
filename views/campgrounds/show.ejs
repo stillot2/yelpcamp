@@ -19,8 +19,30 @@
                 <img class="img-responsive" src="<%=campground.image%>" onerror="this.src='https://images.unsplash.com/photo-1496080174650-637e3f22fa03?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b7ca353cfcc4299e6c3d431ff862e1cf&auto=format&fit=crop&w=400&q=60'" />
                 <div class="caption-full">
                     <h4 class="pull-right">$<%=campground.price%>/night</h4>
-                    <h4><a href="<%=campground.url%>" target="_blank"><%=campground.name%></a></h4>
+
+                    <h4><a href="<%=campground.url%>" target="_blank"><%=campground.name%></a>
+                    
+                        <table class="star-ratings table text-centered">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div class="stars-outer">
+                                <% var sum = 0; %>
+                                <% for (var i=0; i<campground.comments.length; i++){ %>
+                                <%    sum += campground.comments[i].rating; %>
+                                <% }; %>
+                                <% var ranking = (sum/campground.comments.length) * 20; %>
+                                  <div class="stars-inner" style="width: <%=ranking%>%"></div>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    
+                    </h4>
+                    
                     <p><%=campground.description%></p>
+                    <span class="text-center" style="color: #888888; font-size:11px;"><%=campground.name%> is rated <%=Math.round(ranking)%>% (<%=campground.comments.length%> reviews)</span>
                     <p>
                         <p>
                             <div class="user-tag">
@@ -50,8 +72,32 @@
                 <div class="form-group">
                     <textarea class="form-control" type="text" placeholder="I love it here!" name="comment[text]"></textarea>
                 </div>
-                <div class="form-group">
-                    <button class="btn btn-primary">Submit</button>
+                  <div style="display: inline">
+                    <input id="star1" name="comment[rating]" type="radio" class="with-font" value=1 onclick="ratings(1)"/>
+                    <label for="star1" id="idname"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star2" name="comment[rating]"type="radio" class="with-font" value=2 onclick="ratings(2)"/>
+                    <label for="star2"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star3" name="comment[rating]" type="radio" class="with-font" value=3 onclick="ratings(3)"/>
+                    <label for="star3"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star4" name="comment[rating]" type="radio" class="with-font" value=4 onclick="ratings(4)"/>
+                    <label for="star4"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star5" name="comment[rating]" type="radio" class="with-font" value=5 onclick="ratings(5)"/>
+                    <label for="star5"></label>
+                  </div>
+                <div class="form-group" style="display: inline; float: right">
+                    <button class="btn btn-primary" >Submit</button>
                 </div>
                 </form>
                 
@@ -71,13 +117,42 @@
                             </p>
                 
                             <% if (currUser && (comment.author.id.equals(currUser._id) || currUser.username === "admin")) { %>
-                                <a class="btn btn-warning btn-xs" href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a>
-                                <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
-                                    <button class="btn btn-danger btn-xs">Remove</button>
-                                </form>
+                                <span>
+                                    <table class="star-ratings comment">
+                                      <tbody>
+                                        <tr>
+                                          <td>
+                                            <div class="stars-outer">
+                                              <div class="stars-inner" style="width: <%=comment.rating * 20%>%"></div>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </span>
+                                <span><em style="font-size: 10px; color: #888888"><%=comment.rating%>
+                                                <% if(comment.rating>1){ %>
+                                                    stars
+                                                <% } else { %>
+                                                    star
+                                                <% } %>
+                                              </em></span>
+                                
+                                <span class="pull-right">
+                                    <a class="btn btn-warning btn-xs" href="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>/edit">Edit</a>
+                                    <form class="delete-form" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                        <button class="btn btn-danger btn-xs">Remove</button>
+                                    </form>
+                                </span>
+                                
                             <% }; %>
+                            
+                            <br>
                             <hr>
                         </div>
+                        
+                            
+                       
                     </div>
                 <% }); %>
             </div>
@@ -94,6 +169,22 @@
         form.style.display = "block";
     }
 </script>
+
+<script>
+    var stars = ["star1", "star2", "star3", "star4", "star5"];
+    function ratings(rating) {
+        
+        for(var i=0; i<stars.length; i++){
+            var starElem = document.getElementById(stars[i]);
+            if(i<rating){
+                if (!starElem.classList.contains("cascade")) starElem.classList.add("cascade");
+            } else {
+                if (starElem.classList.contains("cascade")) starElem.classList.remove("cascade");
+            }
+        }
+    }
+</script>
+
 <script>
     var map;
     function initMap() {

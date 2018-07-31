@@ -5,9 +5,35 @@
         <h2 style="text-align: center;">Edit comment</h2>
         <div style="width: 30%; margin: 25px auto;">
             <form action="/campgrounds/<%=campground_id%>/comments/<%=comment._id%>?_method=PUT" method="POST">
+                
                 <div class="form-group">
-                    <input class="form-control" type="text" value="<%= comment.text %>" name="comment[text]">
+                    <textarea class="form-control" type="text" value="<%= comment.text %>" name="comment[text]"></textarea>
                 </div>
+                  <div style="display: inline">
+                    <input id="star1" name="comment[rating]" type="radio" class="with-font" value=1 onclick="ratings(1)"/>
+                    <label for="star1" id="idname"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star2" name="comment[rating]"type="radio" class="with-font" value=2 onclick="ratings(2)"/>
+                    <label for="star2"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star3" name="comment[rating]" type="radio" class="with-font" value=3 onclick="ratings(3)"/>
+                    <label for="star3"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star4" name="comment[rating]" type="radio" class="with-font" value=4 onclick="ratings(4)"/>
+                    <label for="star4"></label>
+                  </div>
+                  
+                  <div style="display: inline">
+                    <input id="star5" name="comment[rating]" type="radio" class="with-font" value=5 onclick="ratings(5)"/>
+                    <label for="star5"></label>
+                  </div>
+                <div class="form-group" style="display: inline; float: right">
                 <div class="form-group">
                     <button class="btn btn-lg btn-default btn-block btn-primary">Submit</button>
                 </div>
@@ -17,5 +43,20 @@
         
     </div>
 </div>
+
+<script>
+    var stars = ["star1", "star2", "star3", "star4", "star5"];
+    function ratings(rating) {
+        
+        for(var i=0; i<stars.length; i++){
+            var starElem = document.getElementById(stars[i]);
+            if(i<rating){
+                if (!starElem.classList.contains("cascade")) starElem.classList.add("cascade");
+            } else {
+                if (starElem.classList.contains("cascade")) starElem.classList.remove("cascade");
+            }
+        }
+    }
+</script>
 
 <% include ../partials/footer %>
