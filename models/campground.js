@@ -29,18 +29,18 @@ var campgroundSchema = new mongoose.Schema({
 });
 
 // helper function for cascading delete with dependencies
-campgroundSchema.pre("remove", async function(next){
-   try{
-      await Comment.remove({
-         "_id": {
-            $in: this.comments
-         }
-      });
-      next();
-   } catch (err) {
-      next(err);
-   }
-});
+// campgroundSchema.pre("remove", async function(next){
+//    try{
+//       await Comment.remove({
+//          "_id": {
+//             $in: this.comments
+//          }
+//       });
+//       next();
+//    } catch (err) {
+//       next(err);
+//    }
+// });
 
 
  

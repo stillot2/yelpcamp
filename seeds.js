@@ -5,11 +5,11 @@ var User = require("./models/user");
 
 // actually a teardown of db
 function seedDB(){
-    Campground.find({}, function(err, sites){
-        sites.forEach(function(x){
-            x.delete();
-        });
-    });
+    // Campground.find({}, function(err, sites){
+    //     sites.forEach(function(x){
+    //         x.delete();
+    //     });
+    // });
 //   Campground.remove({}, function(err){
 //         if(err){
 //             console.log(err);
