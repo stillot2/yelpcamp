@@ -185,7 +185,7 @@
         });
       }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCc7lguFDtJX1213J5ME-PNESZbHM5S62o&callback=initMap"
+<script src="https://maps.googleapis.com/maps/api/js?key=<%=process.env.GOOGLE_MAP_PUBLIC_KEY%>&callback=initMap"
 async defer></script>
 
 <% include ../partials/footer %>
