@@ -1,5 +1,5 @@
-var mongoose = require("mongoose");
-var Comment = require("./comment");
+var mongoose      = require("mongoose");
+var Comment       = require("./comment");
  
 var campgroundSchema = new mongoose.Schema({
    name: String,
@@ -28,6 +28,7 @@ var campgroundSchema = new mongoose.Schema({
    ]
 });
 
+// helper function for cascading delete with dependencies
 campgroundSchema.pre("remove", async function(next){
    try{
       await Comment.remove({

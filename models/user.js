@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var passportLocalMongoose = require("passport-local-mongoose");
-var Comment = require("./comment");
-var Campground = require("./campground");
+var mongoose                = require("mongoose");
+var passportLocalMongoose   = require("passport-local-mongoose");
+var Comment                 = require("./comment");
+var Campground              = require("./campground");
 
 var userSchema = new mongoose.Schema({
     username: String,
@@ -24,6 +24,7 @@ var userSchema = new mongoose.Schema({
     ]
 });
 
+// helper function for removing cascading dependencies
 userSchema.pre("remove", async function(next){
    try{
       await Comment.remove({
@@ -41,8 +42,6 @@ userSchema.pre("remove", async function(next){
       next(err);
    }
 });
-
-
 
 userSchema.plugin(passportLocalMongoose); //add methods to user schema
 

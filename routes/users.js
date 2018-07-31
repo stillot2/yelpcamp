@@ -1,8 +1,8 @@
-var express = require("express");
-var router = express.Router();
-var Campground = require("../models/campground");
-var User = require("../models/user");
-var middleware = require("../middleware");
+var express             = require("express");
+var router              = express.Router();
+var Campground          = require("../models/campground");
+var User                = require("../models/user");
+var middleware          = require("../middleware");
 
 // USER SHOW
 router.get("/:user_id", function(req, res){
@@ -34,6 +34,7 @@ router.get("/:user_id/edit", middleware.checkUserOwnership, function(req,res){
         }
     });
 });
+
 // USER UPDATE
 router.put("/:user_id/", middleware.checkUserOwnership, function(req, res){
     User.findById(req.params.user_id, function(err,user){

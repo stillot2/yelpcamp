@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     </head>
     <body>
-    
     <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -19,16 +18,16 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-
             <a class="navbar-brand" href="/">yelpCamp</a>
+            
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="<%= typeof page !== 'undefined' && page === 'campgrounds' ? 'active' : '' %>"><a href="/campgrounds">Home</a></li>
+            <li class="<%= typeof page !== 'undefined' && page === 'about' ? 'active' : '' %>"><a href="/about">About</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
               <% if(!currUser){ %>
-                    
                   <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                   <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
               <% } else { %>
@@ -36,7 +35,6 @@
               <% if(currUser.username === "admin") { %>
                     <li class="<%= typeof page !== 'undefined' && page === 'admin' ? 'active' : '' %>"><a href="/admin">Administration</a></li>
                     <% }; %>
-                  
                   <li><a href="/users/<%=currUser._id%>">Profile</a></li>
                   <li><a href="/logout">Logout</a></li>
               <% } %>

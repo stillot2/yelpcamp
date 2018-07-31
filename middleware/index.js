@@ -1,7 +1,8 @@
-var Campground = require("../models/campground");
-var Comment = require("../models/comment");
+var Campground      = require("../models/campground");
+var Comment         = require("../models/comment");
 
-// all middleware goes here
+// Middleware for robust routing
+
 var middlewareObj = {};
 
 middlewareObj.checkCampgroundOwnership = function (req, res, next) {
@@ -14,7 +15,6 @@ middlewareObj.checkCampgroundOwnership = function (req, res, next) {
             } else {
                 // is user owner? or admin?
                 if(foundItem.author.id.equals(req.user._id)||(req.user.username==="admin")){
-                    
                     next();
                 } else {
                     req.flash("error", "Permission denied");
@@ -28,6 +28,7 @@ middlewareObj.checkCampgroundOwnership = function (req, res, next) {
     }
 };
 
+// verification for request sender to be specific User or Admin
 middlewareObj.checkUserOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         if(req.params.user_id === req.user.id || req.user.username==="admin"){
@@ -41,6 +42,7 @@ middlewareObj.checkUserOwnership = function(req, res, next){
     }
 };
 
+// verification for request sender to be specific User or Admin
 middlewareObj.checkCommentOwnership = function(req, res, next) {
     if (req.isAuthenticated()){
         // is user logged in?
@@ -49,7 +51,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                 req.flash("error", "Comment not found");
                 res.redirect("back");
             } else {
-                // is user owner? or admin ciao
+                // is user owner? or admin
                 if(foundItem.author.id.equals(req.user._id)||(req.user.username==="admin")){
                     next();
                 } else {
@@ -62,6 +64,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
     }
 };
 
+// verification for funtionality designated only for authenticated users
 middlewareObj.isLoggedIn = function (req, res, next){
     if(req.isAuthenticated()){
         return next();

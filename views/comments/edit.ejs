@@ -5,7 +5,6 @@
         <h2 style="text-align: center;">Edit comment</h2>
         <div style="width: 30%; margin: 25px auto;">
             <form action="/campgrounds/<%=campground_id%>/comments/<%=comment._id%>?_method=PUT" method="POST">
-                
                 <div class="form-group">
                     <textarea class="form-control" type="text" value="<%= comment.text %>" name="comment[text]"></textarea>
                 </div>
@@ -13,22 +12,18 @@
                     <input id="star1" name="comment[rating]" type="radio" class="with-font" value=1 onclick="ratings(1)"/>
                     <label for="star1" id="idname"></label>
                   </div>
-                  
                   <div style="display: inline">
                     <input id="star2" name="comment[rating]"type="radio" class="with-font" value=2 onclick="ratings(2)"/>
                     <label for="star2"></label>
                   </div>
-                  
                   <div style="display: inline">
                     <input id="star3" name="comment[rating]" type="radio" class="with-font" value=3 onclick="ratings(3)"/>
                     <label for="star3"></label>
                   </div>
-                  
                   <div style="display: inline">
                     <input id="star4" name="comment[rating]" type="radio" class="with-font" value=4 onclick="ratings(4)"/>
                     <label for="star4"></label>
                   </div>
-                  
                   <div style="display: inline">
                     <input id="star5" name="comment[rating]" type="radio" class="with-font" value=5 onclick="ratings(5)"/>
                     <label for="star5"></label>
@@ -40,7 +35,6 @@
             </form>
             <a href="/campgrounds">Go back</a>
         </div>
-        
     </div>
 </div>
 

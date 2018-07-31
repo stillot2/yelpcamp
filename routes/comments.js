@@ -1,9 +1,9 @@
-var express = require("express");
-var router = express.Router({mergeParams: true});
-var Campground = require("../models/campground");
-var Comment = require("../models/comment");
-var User = require("../models/user");
-var middleware = require("../middleware");
+var express                 = require("express");
+var router                  = express.Router({mergeParams: true});
+var Campground              = require("../models/campground");
+var Comment                 = require("../models/comment");
+var User                    = require("../models/user");
+var middleware              = require("../middleware");
 
 //  COMMENTS ROUTES
 router.get("/new", middleware.isLoggedIn, function(req, res){
@@ -16,18 +16,6 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
         }
     });
 });
-
-
-// router.get("/new", middleware.isLoggedIn, function(req, res){
-//     Campground.findById(req.params.id, function(err, campground){
-//         if(err){
-//             console.log(err);
-//         } else {
-//             res.render("comments/new", {campground: campground});
-//         }
-//     });
-// });
-
 
 // comments create
 router.post("/", middleware.isLoggedIn, function(req, res){
@@ -86,6 +74,7 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, 
     })
 
 });
+
 // update
 router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err,updatedItem){

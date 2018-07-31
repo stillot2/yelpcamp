@@ -1,19 +1,67 @@
 <% include ../partials/header %>
 
-<ul>
-    <% users.forEach(function(user){ %>
-        <li><%=user.username%></li>
-    <% }); %>
-    <hr>
-    <%campgrounds.forEach(function(camp){%>
-        <li><%=camp.name%>, <%=camp.author.username%></li>
-    <% }); %>
-    <hr>
-    <%comments.forEach(function(comment){%>
-        <li><%=comment.text%>, <%=comment.author.username%></li>
-    <% }); %>
-        
-    
-</ul>
+<h5>Registered Users</h5>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <% users.forEach(function(user){ %>
+    <tr>
+    <td><%=user.fname%></td>
+    <td><%=user.lname%></td>
+    <td><a href="/users/<%=user._id%>"><%=user.username%></a></td>
+    <td><form class="delete-form" action="/users/<%=user._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-danger btn-xs">Delete User</button>
+    </form></td>
+    </tr>
+  <% }); %>
+</table>
+
+<hr>
+
+<h5>Campground Listings</h5>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Reviews</th>
+      <th scope="col">Author</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <% campgrounds.forEach(function(campground){ %>
+    <tr>
+        <td><a href="/campgrounds/<%=campground._id%>"><%=campground.name%></a></td>
+        <td><%=campground.comments.length%></td>
+        <td><%=campground.author.username%></td>
+        <td><form class="delete-form" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger btn-xs">Remove Listing</button>
+        </form></td>
+    </tr>
+  <% }); %>
+</table>
+<hr>
+<h5>Campground Reviews</h5>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Author</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+    </tr>
+  </thead>
+  <% comments.forEach(function(comment){ %>
+  <tr>
+      <td><%=comment.author.username%></td>
+        <td><%=comment.text%></td>
+        <td><%=comment.rating%></td>
+  </tr>
+  <% }); %>
+</table>
 
 <% include ../partials/footer %>

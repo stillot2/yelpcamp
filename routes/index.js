@@ -1,15 +1,21 @@
-var express = require("express");
-var router = express.Router();
-var User = require("../models/user");
-var Campground = require("../models/campground");
-var Comment = require("../models/comment");
-var passport = require("passport");
+var express             = require("express");
+var router              = express.Router();
+var User                = require("../models/user");
+var Campground          = require("../models/campground");
+var Comment             = require("../models/comment");
+var passport            = require("passport");
 
-//landing page
+// landing page
 router.get("/",function(req,res){
     res.render("landing");
 });
 
+// about
+router.get("/about",function(req,res){
+    res.render("about", {page: "about"});
+});
+
+// register
 router.get("/register",function(req,res){
     res.render("register", {page: "register"});
 });
@@ -36,9 +42,12 @@ router.post("/register", function(req,res){
     });
 });
 
+// show login
 router.get("/login", function(req,res){
     res.render("login", {page: "login"});
 });
+
+// post login
 router.post("/login", passport.authenticate("local", 
     {
         successRedirect: "/campgrounds",
@@ -46,15 +55,17 @@ router.post("/login", passport.authenticate("local",
     }), function(req,res){
 });
 
+// logout
 router.get("/logout", function(req, res){
     req.logout();
-    req.flash("succes", "Goodbye");
+    req.flash("success", "Goodbye");
     res.redirect("/campgrounds");
 });
 
 /////////////////////
 // admin page
 router.get("/admin", function(req, res){
+    // ciao, possibly refactor a secret admin username as env variable
     if(req.user.username === "admin"){
         // find all users
         User.find({}, function(err,users){
@@ -74,16 +85,13 @@ router.get("/admin", function(req, res){
                         } else {
                             res.render("admin/show", {users:users, campgrounds:campgrounds, comments:comments, page:"admin"});
                         }
-                    })
+                    });
                 }
-            })
-          
+            });
         }
-        
-       
     });
     } else {
-        req.flash("error", "Must be admin to view here");
+        req.flash("error", "Must be admin to visit here!");
         res.redirect("back");
     };
 });
