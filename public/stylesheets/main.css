@@ -24,6 +24,14 @@
   border-radius: 50%;
 }
 
+.user-tag img{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 50px;
+    width: auto;
+}
+
 /*.float-right {*/
 /*    float: right;*/
 /*    padding-bottom: 20px;*/
