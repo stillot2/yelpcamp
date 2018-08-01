@@ -5,10 +5,16 @@
     <div style="width: 30%; margin: 25px auto;">
         <form action="/login" method="post">
             <div class="form-group">
-                <input class="form-control" type="text" name="username" placeholder="username">
+                <label for="login-username">
+                    Username
+                </label>
+                <input id="login-username" class="form-control" type="text" name="username" placeholder="username">
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password" placeholder="password">
+                <label for="login-password">
+                    Password
+                </label>
+                <input id="login-password" class="form-control" type="password" name="password" placeholder="password">
             </div>
             <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block">Login</button>
@@ -18,22 +24,28 @@
         <h1 style="text-align: center">Register</h1>
         <form action="/register" method="post">
             <div class="form-group">
-                <input class="form-control" type="text" name="username" placeholder="username" require>
+                <label for="reg-username">Username</label>
+                <input id="reg-username" class="form-control" type="text" name="username" placeholder="hcamper2" require>
             </div>
             <div class="form-group">
-                <input class="form-control" type="password" name="password" placeholder="password" require>
+                <label for="reg-password">Password</label>
+                <input id="reg-password" class="form-control" type="password" name="password" placeholder="password" require>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="fname" placeholder="first name" require>
+                <label for="reg-fname">First name</label>
+                <input id="reg-fname" class="form-control" type="text" name="fname" placeholder="Happy" require>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="lname" placeholder="last name">
+                <label for="reg-lname">Last name</label>
+                <input id="reg-lname" class="form-control" type="text" name="lname" placeholder="Camper">
             </div>
             <div class="form-group">
-                <input class="form-control" type="email" name="email" placeholder="name@domain.com" require>
+                <label for="reg-email">E-mail address</label>
+                <input id="reg-email" class="form-control" type="email" name="email" placeholder="name@domain.com" require>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="avatar" placeholder="avatar url">
+                <label for="reg-avatar">Avatar URL</label>
+                <input class="form-control" type="text" name="avatar" placeholder="https://www.photo.jpg">
             </div>
             <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block">Sign Up!</button>

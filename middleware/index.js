@@ -34,7 +34,7 @@ middlewareObj.checkUserOwnership = function(req, res, next){
         if(req.params.user_id === req.user.id || req.user.username==="admin"){
             next();
         } else {
-            req.flash("error", req.params.id+" "+req.user.id+" "+typeof(req.params.id)+" "+typeof(req.user.id));
+            req.flash("error", "Permission denied");
             res.redirect("back");
         }
     } else {
@@ -55,11 +55,13 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                 if(foundItem.author.id.equals(req.user._id)||(req.user.username==="admin")){
                     next();
                 } else {
+                    req.flash("error", "Permission denied");
                     res.redirect("back");
                 }
             }
         });
     } else {
+        req.flash("error", "Please login or sign up first");
         res.redirect("back");
     }
 };
