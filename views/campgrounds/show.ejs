@@ -27,11 +27,16 @@
                             <tr>
                               <td>
                                 <div class="stars-outer">
-                                <% var sum = 0; %>
-                                <% for (var i=0; i<campground.comments.length; i++){ %>
-                                <%    sum += campground.comments[i].rating; %>
-                                <% }; %>
-                                <% var ranking = (sum/campground.comments.length) * 20; %>
+                                <% if(campground.comments.length>0) { %>
+                                    <% var sum = 0; %>
+                                    <% for (var i=0; i<campground.comments.length; i++){ %>
+                                    <%    sum += campground.comments[i].rating; %>
+                                    <% }; %>
+                                    <% var ranking = (sum/campground.comments.length) * 20; %>
+                                <% } else { %>
+                                    <% ranking = 100; %>
+                                <% } %>
+                                
                                 <div class="stars-inner" style="width: <%=ranking%>%"></div>
                                 </div>
                               </td>
