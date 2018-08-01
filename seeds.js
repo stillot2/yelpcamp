@@ -10,24 +10,24 @@ function seedDB(){
     //         x.delete();
     //     });
     // });
-//   Campground.remove({}, function(err){
-//         if(err){
-//             console.log(err);
-//         }
-//         console.log("removed campgrounds!");
-//         Comment.remove({}, function(err) {
-//             if(err){
-//                 console.log(err);
-//             }
-//             console.log("removed comments!");
-//                 User.remove({}, function(err) {
-//                     if(err){
-//                         console.log(err);
-//                     }
-//                     console.log("removed users!");
-//             });
-//         });
-//     }); 
+  Campground.remove({}, function(err){
+        if(err){
+            console.log(err);
+        }
+        console.log("removed campgrounds!");
+        Comment.remove({}, function(err) {
+            if(err){
+                console.log(err);
+            }
+            console.log("removed comments!");
+                User.remove({}, function(err) {
+                    if(err){
+                        console.log(err);
+                    }
+                    console.log("removed users!");
+            });
+        });
+    }); 
 }
  
 module.exports = seedDB;

@@ -20,6 +20,8 @@ var commentRoutes       = require("./routes/comments"),
 
    
 mongoose.connect(process.env.DBURL);  
+//mongoose.connect("mongodb://localhost/yelpcamp");  
+//seedDB(); // seed the database
     
 // config
 app.use(bodyParser.urlencoded({extended: true}));
@@ -50,7 +52,7 @@ app.use(function(req,res,next){
 });
 
 
-// seedDB(); // seed the database
+
 
 app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
