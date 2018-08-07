@@ -1,17 +1,18 @@
 var mongoose      = require("mongoose");
 var Comment       = require("./comment");
- 
+
+// schema for each campground 
 var campgroundSchema = new mongoose.Schema({
    name: String,
    price: String,
    image: String,
-   imageId: String,
+   imageId: String, // for cloudinary removal
    url: String,
    description: String,
    location: String,
-   lat: Number,
-   lng: Number,
-   createdAt: { type: Date, default: Date.now },
+   lat: Number, // for google api
+   lng: Number, // for google api
+   createdAt: { type: Date, default: Date.now }, // for moments
    author: {
       id: {
          type: mongoose.Schema.Types.ObjectId,

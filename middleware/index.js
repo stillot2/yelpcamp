@@ -5,6 +5,15 @@ var Comment         = require("../models/comment");
 
 var middlewareObj = {};
 
+
+/*
+* checkCampgroundOwnership
+* inputs:   request, response, next
+* outputs:  none
+* behavior: middleware for handling the 
+*           http response after verify
+*           the request is sent by owner/admin
+*/
 middlewareObj.checkCampgroundOwnership = function (req, res, next) {
     if (req.isAuthenticated()){
         // is user logged in?
@@ -29,6 +38,14 @@ middlewareObj.checkCampgroundOwnership = function (req, res, next) {
 };
 
 // verification for request sender to be specific User or Admin
+/*
+* checkUserOwnership
+* inputs:   request, response, next
+* outputs:  none
+* behavior: middleware for handling the 
+*           http response after verification
+*           of "user" ownership
+*/          
 middlewareObj.checkUserOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         if(req.params.user_id === req.user.id || req.user.username==="admin"){
@@ -43,6 +60,15 @@ middlewareObj.checkUserOwnership = function(req, res, next){
 };
 
 // verification for request sender to be specific User or Admin
+/*
+* checkCommentOwnership
+* inputs:   request, response, next
+* outputs:  none
+* behavior: middleware for handling the 
+*           http response after verification
+*           of "comment" ownership.  only 
+*           owner/admin can edit/remove.
+*/  
 middlewareObj.checkCommentOwnership = function(req, res, next) {
     if (req.isAuthenticated()){
         // is user logged in?
